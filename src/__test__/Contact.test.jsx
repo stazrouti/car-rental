@@ -38,11 +38,11 @@ test('renders contact page', () => {
   expect(fullNameInput).toBeInTheDocument();
   expect(fullNameInput).toHaveAttribute('type', 'text');
 
-  const emailInput = screen.getByLabelText(/Email \*/i);
+  const emailInput = screen.getByLabelText(/Email \* /i);
   expect(emailInput).toBeInTheDocument();
   expect(emailInput).toHaveAttribute('type', 'email');
 
-  const messageTextarea = screen.getByLabelText(/Tell us about it \*/i);
+  const messageTextarea = screen.getByLabelText(/Tell us about it \* /i);
   expect(messageTextarea).toBeInTheDocument();
   expect(messageTextarea).toHaveAttribute('placeholder', 'Write Here..');
 
