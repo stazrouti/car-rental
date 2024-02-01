@@ -15,3 +15,6 @@ jobs:
 
       - name: Run Automated Tests
         run: npm test
+
+      - name: Run Cypress Tests
+      run: npm run cypress:run
