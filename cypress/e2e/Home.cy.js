@@ -1,10 +1,9 @@
 describe('template spec', () => {
+  
   beforeEach(() => {
-    // Common setup code
     cy.visit('http://localhost:3000/');
-
-
   });
+
   it('home rendering', () => {
     cy.visit('http://localhost:3000/')
     cy.contains('Book Ride').click() 
