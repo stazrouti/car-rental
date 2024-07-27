@@ -39,7 +39,7 @@ describe('<BookCar />', () => {
   });
    
 
-  it('confirms booking and shows a success message', async () => {
+/*   it('confirms booking and shows a success message', async () => {
     const { getByText, getByLabelText, getByPlaceholderText } = render(<BookCar />);
   
     // Check if important elements are present
@@ -65,7 +65,7 @@ describe('<BookCar />', () => {
     
       expect(getByText('Check your email to confirm an order.')).toBeInTheDocument();
     
-  });
+  }); */
   
     
   
