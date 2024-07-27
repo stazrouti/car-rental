@@ -12,14 +12,14 @@ describe('Footer', () => {
     cy.contains('We offers a big range of vehicles for all your driving needs. We have the perfect car to meet your needs.').should('exist');
     cy.contains('(123) -456-789').should('exist');
     cy.contains('carrental@gmail.com').should('exist');
-    cy.contains('Design by XpeedStudio').should('exist');
+    cy.contains('Design by scolofix').should('exist');
   });
 
   // Tests if the external link in the footer is present and has the correct attributes
   it('navigates to external link', () => {
-    cy.get('.footer-content__1 a[href="https://xpeedstudio.com/"]').should('exist');
-    cy.get('.footer-content__1 a[href="https://xpeedstudio.com/"]').should('have.attr', 'target', '_blank');
-    cy.get('.footer-content__1 a[href="https://xpeedstudio.com/"]').should('have.attr', 'rel', 'noreferrer');
+    cy.get('.footer-content__1 a[href="https://github.com/stazrouti/"]').should('exist');
+    cy.get('.footer-content__1 a[href="https://github.com/stazrouti/"]').should('have.attr', 'target', '_blank');
+    cy.get('.footer-content__1 a[href="https://github.com/stazrouti/"]').should('have.attr', 'rel', 'noreferrer');
   });
 
   // Tests if the working hours are displayed correctly
