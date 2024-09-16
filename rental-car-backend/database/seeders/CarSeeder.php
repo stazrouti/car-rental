@@ -25,7 +25,7 @@ class CarSeeder extends Seeder
                 'AC' => $faker->randomElement(['Yes', 'No']), // Random AC availability
                 'Transmission' => $faker->randomElement(['Manual', 'Automatic']), // Random transmission type
                 'Fuel' => $faker->randomElement(['Petrol', 'Diesel', 'Electric']), // Random fuel type
-                'Price_per_day' => $faker->randomFloat(2, 50, 300), // Random rental price per day (50 to 300)
+                'Price_per_day' => $faker->numberBetween(50, 750), // Random rental price per day (50 to 300)
                 'Status' => $faker->randomElement(['Available', 'Rented', 'Maintenance']), // Random status
                 'created_at' => now(),
                 'updated_at' => now(),
