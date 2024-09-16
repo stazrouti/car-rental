@@ -1,10 +1,47 @@
-import { useState } from "react";
+import { useState, useEffect } from "react";
+import axios from "axios";
 import CarBox from "./CarBox";
-import { CAR_DATA } from "./CarData";
 
 function PickCar() {
-  const [active, setActive] = useState("SecondCar");
-  const [colorBtn, setColorBtn] = useState("btn1");
+  const [activeCarId, setActiveCarId] = useState(null);
+  const [colorBtn, setColorBtn] = useState("");
+  const [cars, setCars] = useState([]);
+  const [loading, setLoading] = useState(true);
+  const [error, setError] = useState(null);
+
+  // Fetch cars data from the API
+  useEffect(() => {
+    const fetchCars = async () => {
+      try {
+        const response = await axios.get("http://127.0.0.1:8000/api/cars/");
+        
+        // Log the response data for debugging
+        console.log("API Response:", response.data);
+
+        // Use the response data directly as it's an array of cars
+        if (Array.isArray(response.data)) {
+          // Limit the number of cars to 6
+          const limitedCars = response.data.slice(0, 6);
+          setCars(limitedCars);
+
+          // Set the first car as active initially if available
+          if (limitedCars.length > 0) {
+            setActiveCarId(limitedCars[0].id); // Use the car ID from the fetched data
+            setColorBtn("btn1"); // Set the first button as active
+          }
+        } else {
+          throw new Error("Unexpected response structure");
+        }
+
+        setLoading(false);
+      } catch (err) {
+        setError(err);
+        setLoading(false);
+      }
+    };
+
+    fetchCars();
+  }, []);
 
   const btnID = (id) => {
     setColorBtn(colorBtn === id ? "" : id);
@@ -12,6 +49,15 @@ function PickCar() {
 
   const coloringButton = (id) => {
     return colorBtn === id ? "colored-button" : "";
+  };
+
+  // Handle loading and error states
+  if (loading) return <div>Loading cars...</div>;
+  if (error) return <div>Error fetching data: {error.message}</div>;
+
+  // Find the index of the car based on the ID
+  const getCarIndex = (id) => {
+    return cars.findIndex(car => car.id === id);
   };
 
   return (
@@ -30,73 +76,24 @@ function PickCar() {
             <div className="pick-container__car-content">
               {/* pick car */}
               <div className="pick-box">
-                <button
-                  className={`${coloringButton("btn1")}`}
-                  onClick={() => {
-                    setActive("SecondCar");
-                    btnID("btn1");
-                  }}
-                >
-                  Audi A1 S-Line
-                </button>
-                <button
-                  className={`${coloringButton("btn2")}`}
-                  id="btn2"
-                  onClick={() => {
-                    setActive("FirstCar");
-                    btnID("btn2");
-                  }}
-                >
-                  VW Golf 6
-                </button>
-                <button
-                  className={`${coloringButton("btn3")}`}
-                  id="btn3"
-                  onClick={() => {
-                    setActive("ThirdCar");
-                    btnID("btn3");
-                  }}
-                >
-                  Toyota Camry
-                </button>
-                <button
-                  className={`${coloringButton("btn4")}`}
-                  id="btn4"
-                  onClick={() => {
-                    setActive("FourthCar");
-                    btnID("btn4");
-                  }}
-                >
-                  BMW 320 ModernLine
-                </button>
-                <button
-                  className={`${coloringButton("btn5")}`}
-                  id="btn5"
-                  onClick={() => {
-                    setActive("FifthCar");
-                    btnID("btn5");
-                  }}
-                >
-                  Mercedes-Benz GLK
-                </button>
-                <button
-                  className={`${coloringButton("btn6")}`}
-                  id="btn6"
-                  onClick={() => {
-                    setActive("SixthCar");
-                    btnID("btn6");
-                  }}
-                >
-                  VW Passat CC
-                </button>
+                {cars.map((car, index) => (
+                  <button
+                    key={car.id}
+                    className={`${coloringButton(`btn${index + 1}`)}`}
+                    onClick={() => {
+                      setActiveCarId(car.id);
+                      btnID(`btn${index + 1}`);
+                    }}
+                  >
+                    {car.Name} {/* Use the Name field from fetched data */}
+                  </button>
+                ))}
               </div>
 
-              {active === "FirstCar" && <CarBox data={CAR_DATA} carID={0} />}
-              {active === "SecondCar" && <CarBox data={CAR_DATA} carID={1} />}
-              {active === "ThirdCar" && <CarBox data={CAR_DATA} carID={2} />}
-              {active === "FourthCar" && <CarBox data={CAR_DATA} carID={3} />}
-              {active === "FifthCar" && <CarBox data={CAR_DATA} carID={4} />}
-              {active === "SixthCar" && <CarBox data={CAR_DATA} carID={5} />}
+              {/* Pass fetched cars data to CarBox */}
+              {activeCarId !== null && (
+                <CarBox data={cars} carID={getCarIndex(activeCarId)} />
+              )}
             </div>
           </div>
         </div>
