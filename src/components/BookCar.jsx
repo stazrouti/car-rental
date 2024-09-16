@@ -178,11 +178,11 @@ function BookCar() {
 
               <form className="box-form">
                 <div className="box-form__car-type">
-                  <label>
+                  <label for="Select Your Car Type">
                     <IconCar className="input-icon" /> &nbsp; Select Your Car
                     Type <b>*</b>
                   </label>
-                  <select value={carType} onChange={handleCar}>
+                  <select data-testid="SelectYourCarType" id="Select-Your-Car-Type" value={carType} onChange={handleCar}>
                     <option>Select your car type</option>
                     <option value="Audi A1 S-Line">Audi A1 S-Line</option>
                     <option value="VW Golf 6">VW Golf 6</option>
@@ -196,11 +196,11 @@ function BookCar() {
                 </div>
 
                 <div className="box-form__car-type">
-                  <label>
+                  <label for="Pick-up">
                     <IconMapPinFilled className="input-icon" /> &nbsp; Pick-up{" "}
                     <b>*</b>
                   </label>
-                  <select value={pickUp} onChange={handlePick}>
+                  <select id="Pick-up" value={pickUp} onChange={handlePick}>
                     <option>Select pick up location</option>
                     <option>Belgrade</option>
                     <option>Novi Sad</option>
@@ -215,7 +215,7 @@ function BookCar() {
                     <IconMapPinFilled className="input-icon" /> &nbsp; Drop-of{" "}
                     <b>*</b>
                   </label>
-                  <select value={dropOff} onChange={handleDrop}>
+                  <select value={dropOff} onChange={handleDrop} id="Drop-of">
                     <option>Select drop off location</option>
                     <option>Novi Sad</option>
                     <option>Belgrade</option>
@@ -226,8 +226,8 @@ function BookCar() {
                 </div>
 
                 <div className="box-form__car-time">
-                  <label htmlFor="picktime">
-                    <IconCalendarEvent className="input-icon" /> &nbsp; Pick-up{" "}
+                  <label for="picktime">
+                    <IconCalendarEvent className="input-icon" /> &nbsp; picktime{" "}
                     <b>*</b>
                   </label>
                   <input
