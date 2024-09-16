@@ -72,6 +72,10 @@ class CarController extends Controller
     {
         // Find the car by ID along with its images using Eager Loading
         $car = Car::with('images')->find($id);
+        
+        if (!$car) {
+            return response()->json(['message' => 'Car not found'], 404);
+        }
     
         // If the car doesn't exist, return a 404 error
         if (!$car) {
