@@ -330,10 +330,11 @@ function BookCar() {
               <span>
                 <IconMapPinFilled />
                 <div>
-                  <h6>Pick-Up Date & Time</h6>
+                  {/* <h6>Pick-Up Date & Time</h6> */}
+                  <h6>Pick-Up Date </h6> 
                   <p>
-                    {pickTime} /{" "}
-                    <input type="time" className="input-time"></input>
+                    {pickTime} {/* /{" "}
+                    <input type="time" className="input-time"></input> */}
                   </p>
                 </div>
               </span>
@@ -343,10 +344,11 @@ function BookCar() {
               <span>
                 <IconMapPinFilled />
                 <div>
-                  <h6>Drop-Off Date & Time</h6>
+                  {/* <h6>Drop-Off Date & Time</h6> */}
+                  <h6>Drop-Off Date</h6>
                   <p>
-                    {dropTime} /{" "}
-                    <input type="time" className="input-time"></input>
+                    {dropTime} {/* /{" "}
+                    <input type="time" className="input-time"></input> */}
                   </p>
                 </div>
               </span>
