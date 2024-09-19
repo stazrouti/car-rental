@@ -9,6 +9,8 @@ import { IconCar, IconInfoCircleFilled, IconX } from "@tabler/icons-react";
 import { IconMapPinFilled } from "@tabler/icons-react";
 import { IconCalendarEvent } from "@tabler/icons-react";
 
+import axios from "axios";
+
 function BookCar() {
   const [modal, setModal] = useState(false); //  class - active-modal
 
@@ -29,6 +31,32 @@ function BookCar() {
   const [address, setAddress] = useState("");
   const [city, setCity] = useState("");
   const [zipcode, setZipCode] = useState("");
+
+
+  const [cars, setCars] = useState([]);
+  const [loading, setLoading] = useState(true);
+  const [error, setError] = useState(null);
+  // Fetch cars data from the API
+  useEffect(() => {
+    const fetchCars = async () => {
+      try {
+        const response = await axios.get("http://127.0.0.1:8000/api/cars/");
+        if (Array.isArray(response.data)) {
+          // Limit the number of cars to 6
+          const limitedCars = response.data.slice(0, 6);
+          setCars(limitedCars);
+        } else {
+          throw new Error("Unexpected response structure");
+        }
+        setLoading(false);
+      } catch (err) {
+        setError(err);
+        setLoading(false);
+      }
+    };
+    fetchCars();
+  }, []);
+
 
   // taking value of modal inputs
   const handleName = (e) => {
@@ -67,21 +95,23 @@ function BookCar() {
   const openModal = (e) => {
     e.preventDefault();
     const errorMsg = document.querySelector(".error-message");
-    if (
-      pickUp === "" ||
-      dropOff === "" ||
-      pickTime === "" ||
-      dropTime === "" ||
-      carType === ""
-    ) {
-      errorMsg.style.display = "flex";
+
+    if (pickUp === "" || dropOff === "" || pickTime === "" || dropTime === "" || carType === "") {
+        errorMsg.style.display = "flex";
     } else {
-      setModal(!modal);
-      const modalDiv = document.querySelector(".booking-modal");
-      modalDiv.scroll(0, 0);
-      errorMsg.style.display = "none";
+        const selectedCar = cars.find((car) => car.Name === carType);
+
+        // If a car is found, set the car image URL to the first image
+        if (selectedCar && selectedCar.images && selectedCar.images.length > 0) {
+            setCarImg(selectedCar.images[0].image_path); // Assuming the first image is the one you want
+        } else {
+            setCarImg(""); // Set a default or empty image if no match is found
+        }
+        setModal(true);
+        errorMsg.style.display = "none";
     }
-  };
+};
+
 
   // disable page scroll when modal is displayed
   useEffect(() => {
@@ -101,10 +131,19 @@ function BookCar() {
   };
 
   // taking value of booking inputs
+
   const handleCar = (e) => {
-    setCarType(e.target.value);
-    setCarImg(e.target.value);
-  };
+    const selectedCarType = e.target.value;
+    setCarType(selectedCarType);
+
+    const selectedCar = cars.find((car) => car.Name === selectedCarType);
+    if (selectedCar && selectedCar.images && selectedCar.images.length > 0) {
+        setCarImg(selectedCar.images[0]); // Set car image immediately upon selection
+    } else {
+        setCarImg(""); // Clear image if no car found or no images available
+    }
+};
+
 
   const handlePick = (e) => {
     setPickUp(e.target.value);
@@ -122,8 +161,9 @@ function BookCar() {
     setDropTime(e.target.value);
   };
 
+
   // based on value name show car img
-  let imgUrl;
+/*   let imgUrl;
   switch (carImg) {
     case "Audi A1 S-Line":
       imgUrl = CarAudi;
@@ -145,7 +185,7 @@ function BookCar() {
       break;
     default:
       imgUrl = "";
-  }
+  } */
 
   // hide message
   const hideMessage = () => {
@@ -157,10 +197,7 @@ function BookCar() {
     <>
       <section id="booking-section" className="book-section">
         {/* overlay */}
-        <div
-          onClick={openModal}
-          className={`modal-overlay ${modal ? "active-modal" : ""}`}
-        ></div>
+        <div onClick={() => setModal(false)} className={`modal-overlay ${modal ? "active-modal" : ""}`}></div>
 
         <div className="container">
           <div className="book-content">
@@ -183,7 +220,13 @@ function BookCar() {
                     Type <b>*</b>
                   </label>
                   <select value={carType} onChange={handleCar}>
-                    <option>Select your car type</option>
+                  <option>Select your car type</option>
+                  {
+                    cars.map((car) => (
+                      <option value={car.Name}>{car.Name}</option>
+                      ))
+                      }
+                    {/* <option>Select your car type</option>
                     <option value="Audi A1 S-Line">Audi A1 S-Line</option>
                     <option value="VW Golf 6">VW Golf 6</option>
                     <option value="Toyota Camry">Toyota Camry</option>
@@ -191,7 +234,7 @@ function BookCar() {
                       BMW 320 ModernLine
                     </option>
                     <option value="Mercedes-Benz GLK">Mercedes-Benz GLK</option>
-                    <option value="VW Passat CC">VW Passat CC</option>
+                    <option value="VW Passat CC">VW Passat CC</option> */}
                   </select>
                 </div>
 
@@ -333,7 +376,7 @@ function BookCar() {
             <h5>
               <span>Car -</span> {carType}
             </h5>
-            {imgUrl && <img src={imgUrl} alt="car_img" />}
+            {carImg ? <img src={carImg} alt="Selected Car" /> : <p>No image available</p>}
           </div>
         </div>
         {/* personal info */}
