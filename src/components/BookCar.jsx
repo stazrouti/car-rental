@@ -161,7 +161,6 @@ function BookCar() {
     setDropTime(e.target.value);
   };
 
-
   // based on value name show car img
 /*   let imgUrl;
   switch (carImg) {
@@ -424,22 +423,6 @@ function BookCar() {
                 ></input>
                 <p className="error-modal">This field is required.</p>
               </span>
-
-              <span>
-                <label>
-                  Age <b>*</b>
-                </label>
-                <input
-                  value={age}
-                  onChange={handleAge}
-                  type="number"
-                  placeholder="18"
-                ></input>
-                <p className="error-modal ">This field is required.</p>
-              </span>
-            </div>
-
-            <div className="info-form__1col">
               <span>
                 <label>
                   Email <b>*</b>
@@ -453,6 +436,34 @@ function BookCar() {
                 <p className="error-modal">This field is required.</p>
               </span>
 
+              {/* <span>
+                <label>
+                  Age <b>*</b>
+                </label>
+                <input
+                  value={age}
+                  onChange={handleAge}
+                  type="number"
+                  placeholder="18"
+                ></input>
+                <p className="error-modal ">This field is required.</p>
+              </span> */}
+            </div>
+
+            <div className="info-form__1col">
+              {/* <span>
+                <label>
+                  Email <b>*</b>
+                </label>
+                <input
+                  value={email}
+                  onChange={handleEmail}
+                  type="email"
+                  placeholder="Enter your email address"
+                ></input>
+                <p className="error-modal">This field is required.</p>
+              </span>
+*/}
               <span>
                 <label>
                   Address <b>*</b>
@@ -465,9 +476,9 @@ function BookCar() {
                 ></input>
                 <p className="error-modal ">This field is required.</p>
               </span>
-            </div>
+            </div> 
 
-            <div className="info-form__2col">
+{/*             <div className="info-form__2col">
               <span>
                 <label>
                   City <b>*</b>
@@ -493,7 +504,7 @@ function BookCar() {
                 ></input>
                 <p className="error-modal ">This field is required.</p>
               </span>
-            </div>
+            </div> */}
 
             <span className="info-form__checkbox">
               <input type="checkbox"></input>
