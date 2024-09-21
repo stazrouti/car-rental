@@ -21,6 +21,7 @@ function BookCar() {
   const [pickTime, setPickTime] = useState("");
   const [dropTime, setDropTime] = useState("");
   const [carImg, setCarImg] = useState("");
+  const [carId, setcarId] = useState("");
 
   // modal infos
   const [name, setName] = useState("");
@@ -100,6 +101,7 @@ function BookCar() {
         errorMsg.style.display = "flex";
     } else {
         const selectedCar = cars.find((car) => car.Name === carType);
+        const selectedCarId = setcarId(selectedCar.id); // Assuming the car ID is needed for the reservation
 
         // If a car is found, set the car image URL to the first image
         if (selectedCar && selectedCar.images && selectedCar.images.length > 0) {
@@ -123,11 +125,47 @@ function BookCar() {
   }, [modal]);
 
   // confirm modal booking
-  const confirmBooking = (e) => {
+/*   const confirmBooking = (e) => {
     e.preventDefault();
     setModal(!modal);
     const doneMsg = document.querySelector(".booking-done");
     doneMsg.style.display = "flex";
+  }; */
+  const confirmBooking = async (e) => {
+    e.preventDefault(); // Prevent default form submission
+  
+    // Collect data from your form or component's state (adjust this to your setup)
+    const reservationData = {
+      pickup_date: pickTime ,  // Example values, replace with actual form data
+      dropoff_date: dropTime, 
+      pickup_location: pickUp,
+      dropoff_location: dropOff,
+      car_id: carId, // Example: assume `selectedCarId` holds the selected car's ID
+      first_name: name,  // Form field values from state or refs
+      last_name: lastName,
+      phone_number: phone,
+      email: email,
+      address: address
+    };
+  
+    try {
+      // Make the POST request to the reservation API
+      const response = await axios.post('http://127.0.0.1:8000/api/reservations', reservationData);
+      
+      // If successful, toggle the modal and show the success message
+      setModal(!modal);
+      const doneMsg = document.querySelector(".booking-done");
+      doneMsg.style.display = "flex";
+      
+      console.log('Reservation confirmed:', response.data); // For debugging
+  
+    } catch (error) {
+      // Handle any errors that occur during the request
+      console.error('Error confirming reservation:', error.response.data || error.message);
+      
+      // Optionally show an error message to the user
+      alert('Failed to confirm the reservation. Please try again.');
+    }
   };
 
   // taking value of booking inputs
