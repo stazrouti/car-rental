@@ -8,15 +8,82 @@ import CarImg5 from "../images/cars-big/benz-box.png";
 import CarImg6 from "../images/cars-big/passat-box.png";
 import { Link } from "react-router-dom";
 import { IconCar, IconPhone, IconStar } from "@tabler/icons-react";
+import axios from "axios";
+import { useEffect, useState } from "react";
 
 function Models() {
+
+  const [cars, setCars] = useState([]);  // State to store car data
+  const [loading, setLoading] = useState(true); // State to handle loading
+
+  useEffect(() => {
+    // Fetching car data from API
+    const fetchCars = async () => {
+      try {
+        const response = await axios.get("http://127.0.0.1:8000/api/cars");  // Replace with your API endpoint
+        setCars(response.data);  // Assuming the response data contains an array of car objects
+        setLoading(false);
+      } catch (error) {
+        console.error("Error fetching car data:", error);
+        setLoading(false);
+      }
+    };
+
+    fetchCars();
+  }, []);
+
+  if (loading) {
+    return <div>Loading cars...</div>;  // Loading state
+  }
   return (
     <>
       <section className="models-section">
         <HeroPages name="Vehicle Models" />
         <div className="container">
           <div className="models-div">
-            <div className="models-div__box">
+          {cars.map((car) => (
+              <div className="models-div__box" key={car.id}>
+                <div className="models-div__box__img">
+                  <img src={car.images[0].image_path} alt={car.Name} />  {/* Assuming car object contains an imageUrl field */}
+                  <div className="models-div__box__descr">
+                    <div className="models-div__box__descr__name-price">
+                      <div className="models-div__box__descr__name-price__name">
+                        <p>{car.Name}</p>  {/* Car name */}
+                       {/*  <span>
+                          {[...Array(5)].map((_, i) => (
+                            <IconStar key={i} width={15} height={15} fill={i < car.rating ? "gold" : "gray"} /> 
+                          ))}
+                        </span> */}
+                      </div>
+                      <div className="models-div__box__descr__name-price__price">
+                        <h4>${car.Price_per_day}</h4>  {/* Price per day */}
+                        <p>per day</p>
+                      </div>
+                    </div>
+                    <div className="models-div__box__descr__name-price__details">
+                      <span>
+                        <IconCar /> &nbsp; {car.Model}
+                      </span>
+                      <span style={{ textAlign: "right" }}>
+                        {car.Doors}/5 &nbsp; <IconCar />
+                      </span>
+                      <span>
+                        <IconCar /> &nbsp; {car.Transmission}
+                      </span>
+                      <span style={{ textAlign: "right" }}>
+                        {car.Fuel} &nbsp; <IconCar />
+                      </span>
+                    </div>
+                    <div className="models-div__box__descr__name-price__btn">
+                      <Link onClick={() => window.scrollTo(0, 0)} to={`/book/${car.id}`}>
+                        Book Ride
+                      </Link>
+                    </div>
+                  </div>
+                </div>
+              </div>
+            ))}
+{/*             <div className="models-div__box">
               <div className="models-div__box__img">
                 <img src={CarImg1} alt="car_img" />
                 <div className="models-div__box__descr">
@@ -272,7 +339,7 @@ function Models() {
                   </div>
                 </div>
               </div>
-            </div>
+            </div> */}
           </div>
         </div>
         <div className="book-banner">
